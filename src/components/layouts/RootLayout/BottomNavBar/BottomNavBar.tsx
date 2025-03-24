@@ -16,31 +16,23 @@ const items: NavLinkItem[] = [
 
 const getLinkClassName = ({ isActive }: { isActive: boolean }) => (isActive ? "nav-link active" : "nav-link");
 
-// Some of this code is AI generated.
-// TODO: Clean this stuff up big time!
-
 const BottomNavBar = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const deadZone = 42;
 	const dragging = useRef(false);
 	const startY = useRef(0);
 
-	const handleInputDown = (e: React.MouseEvent | React.TouchEvent) => {
-		const pageY = "touches" in e ? e.touches[0].pageY : e.pageY;
+	const handlePointerDown = (e: React.PointerEvent) => {
+		const pageY = e.pageY;
 
 		dragging.current = true;
 		startY.current = pageY;
 
-		if ("touches" in e) {
-			document.addEventListener("touchmove", handleTouchMove);
-			document.addEventListener("touchend", handleTouchEnd);
-		} else {
-			document.addEventListener("mousemove", handleMouseMove);
-			document.addEventListener("mouseup", handleMouseUp);
-		}
+		document.addEventListener("pointermove", handlePointerMove);
+		document.addEventListener("pointerup", handlePointerUp);
 	};
 
-	const handleMouseMove = useCallback((e: MouseEvent) => {
+	const handlePointerMove = useCallback((e: PointerEvent) => {
 		if (!dragging.current) return;
 
 		const deltaY = e.pageY - startY.current;
@@ -52,48 +44,24 @@ const BottomNavBar = () => {
 			setIsOpen(false);
 			stopDrag();
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const handleMouseUp = useCallback(() => {
+	const handlePointerUp = useCallback(() => {
 		stopDrag();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const stopDrag = useCallback(() => {
 		dragging.current = false;
-		document.removeEventListener("mousemove", handleMouseMove);
-		document.removeEventListener("mouseup", handleMouseUp);
-	}, [handleMouseMove, handleMouseUp]);
-
-	const handleTouchMove = (e: TouchEvent) => {
-		if (!dragging.current) return;
-		const pageY = e.touches[0].pageY;
-
-		const deltaY = pageY - startY.current;
-
-		if (deltaY < -20) {
-			setIsOpen(true);
-			stopTouchDrag();
-		} else if (deltaY > 20) {
-			setIsOpen(false);
-			stopTouchDrag();
-		}
-	};
-
-	const handleTouchEnd = () => {
-		stopTouchDrag();
-	};
-
-	const stopTouchDrag = () => {
-		dragging.current = false;
-		document.removeEventListener("touchmove", handleTouchMove);
-		document.removeEventListener("touchend", handleTouchEnd);
-	};
+		document.removeEventListener("pointermove", handlePointerMove);
+		document.removeEventListener("pointerup", handlePointerUp);
+	}, [handlePointerMove, handlePointerUp]);
 
 	return (
 		<div className={`BottomNavBar ${isOpen ? "active" : ""}`}>
 			<button
-				onMouseDown={handleInputDown}
-				onPointerDown={handleInputDown}
+				onPointerDown={handlePointerDown}
 				aria-label={isOpen ? "Close navigation" : "Open navigation"}
 			>
 				<hr />
