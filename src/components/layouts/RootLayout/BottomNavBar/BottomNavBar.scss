@@ -13,7 +13,7 @@ $indicator-size: 48px;
 
 	&.active {
 		grid-template-rows: $indicator-size 1fr;
-		background-color: #ededed;
+		background-color: #5b5b5b;
 	}
 
 	button {
@@ -26,7 +26,7 @@ $indicator-size: 48px;
 
 	hr {
 		width: 70%;
-		color: rgba(0, 0, 0, 0.404);
+		color: #ffffff;
 	}
 
 	& > nav {
