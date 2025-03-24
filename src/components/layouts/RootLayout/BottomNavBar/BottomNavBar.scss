@@ -1,0 +1,38 @@
+$indicator-size: 64px;
+
+.BottomNavBar {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	width: 100%;
+
+	display: grid;
+	grid-template-rows: $indicator-size 0fr;
+
+	transition: grid-template-rows 0.3s ease, background-color 0.6s ease;
+
+	&.active {
+		grid-template-rows: $indicator-size 1fr;
+		background-color: #ededed;
+	}
+
+	button {
+		border: unset;
+		background-color: unset;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	hr {
+		width: 70%;
+		color: rgba(0, 0, 0, 0.404);
+	}
+
+	& > nav {
+		overflow: hidden;
+		* {
+			margin: 3rem 0;
+		}
+	}
+}

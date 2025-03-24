@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import BottomNavBar from "./BottomNavBar";
+import BottomNavBar from "./BottomNavBar/BottomNavBar";
 
 const RootLayout = () => {
 	return (
