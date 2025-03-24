@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import RootLayout from "../components/layouts/RootLayout/RootLayout";
 import Home from "./pages/Home";
 import About from "./pages/About";
-import Calendar from "./pages/Calendar";
+import Calendar from "./pages/Calendar/Calendar";
 import Profile from "./pages/Profile";
 
 // TODO: Add a route for day visualizer or something
