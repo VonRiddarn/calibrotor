@@ -45,8 +45,6 @@ const BottomNavBar = () => {
 
 		const deltaY = e.pageY - startY.current;
 
-		console.log(`Start: ${startY.current}, Current: ${e.pageY}, Delta: ${deltaY}`);
-
 		if (deltaY < -deadZone) {
 			setIsOpen(true);
 			stopDrag();
