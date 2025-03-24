@@ -17,17 +17,30 @@ const items: NavLinkItem[] = [
 const getLinkClassName = ({ isActive }: { isActive: boolean }) => (isActive ? "nav-link active" : "nav-link");
 
 const BottomNavBar = () => {
-	const [isOpen, setIsOpen] = useState(false);
+	const [isOpen, setIsOpenInternal] = useState(false);
 	const deadZone = 42;
 	const dragging = useRef(false);
 	const startY = useRef(0);
+	const dead = useRef(false);
+
+	const setIsOpen = (value: React.SetStateAction<boolean>) => {
+		if (dead.current) return;
+
+		setIsOpenInternal(value);
+		dead.current = true;
+	};
+
+	const handleOnClick = () => {
+		if (dead.current) return;
+		setIsOpen(!isOpen);
+	};
 
 	const handlePointerDown = (e: React.PointerEvent) => {
 		const pageY = e.pageY;
 
 		dragging.current = true;
 		startY.current = pageY;
-
+		dead.current = false;
 		document.addEventListener("pointermove", handlePointerMove);
 		document.addEventListener("pointerup", handlePointerUp);
 	};
@@ -61,6 +74,7 @@ const BottomNavBar = () => {
 	return (
 		<div className={`BottomNavBar ${isOpen ? "active" : ""}`}>
 			<button
+				onClick={handleOnClick}
 				onPointerDown={handlePointerDown}
 				aria-label={isOpen ? "Close navigation" : "Open navigation"}
 			>
